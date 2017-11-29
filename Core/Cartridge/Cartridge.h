@@ -6,15 +6,18 @@
 #include <stdint.h>
 
 
-bool Cartridge_Load_iNES_File(uint8_t* iNESFile);
+bool Cartridge_File_Load(uint8_t* File);
+
 
 uint8_t Cartridge_PRG_Read(uint16_t Address);
 
 void Cartridge_PRG_Write(uint16_t Address, uint8_t Data);
 
+
 uint8_t Cartridge_CHR_Read(uint16_t Address);
 
 void Cartridge_CHR_Write(uint16_t Address, uint8_t Data);
+
 
 uint8_t Cartridge_VRAM_Read(uint16_t Address);
 
