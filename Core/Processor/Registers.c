@@ -20,22 +20,22 @@ typedef struct
 static cpu_t CPU;
 
 
-static inline void Update_Flags_ZN(uint8_t value)
+static inline void Update_Flags_ZN(uint8_t Value)
 {
-    CPU.Z = value == 0;
-    CPU.N = value >> 7;
+    CPU.Z = Value == 0;
+    CPU.N = Value >> 7;
 }
 
-static inline void Status_Write(uint8_t status)
+static inline void Status_Write(uint8_t Status)
 {
-    CPU.C = status >> 7;
-    CPU.Z = (status >> 6) & 0x1;
-    CPU.I = (status >> 5) & 0x1;
-    CPU.D = (status >> 4) & 0x1;
-    CPU.B = (status >> 3) & 0x1;
-    CPU.S = (status >> 2) & 0x1;
-    CPU.V = (status >> 1) & 0x1;
-    CPU.N = status & 0x1;
+    CPU.C = Status >> 7;
+    CPU.Z = (Status >> 6) & 0x1;
+    CPU.I = (Status >> 5) & 0x1;
+    CPU.D = (Status >> 4) & 0x1;
+    CPU.B = (Status >> 3) & 0x1;
+    CPU.S = (Status >> 2) & 0x1;
+    CPU.V = (Status >> 1) & 0x1;
+    CPU.N = Status & 0x1;
 }
 
 static inline uint8_t Status_Read()
