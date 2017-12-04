@@ -1,11 +1,25 @@
 #include "Audio.h"
 
 
-uint8_t Audio_APU_Register_Read(uint16_t Address)
+void Audio_APU_Reset()
 {
-        return 0;
+
 }
 
+void Audio_APU_Power_Cycle()
+{
+
+}
+
+int16_t* Audio_Get_Samples()
+{
+    return NULL;
+}
+
+uint8_t Audio_APU_Register_Read(uint16_t Address)
+{
+    return 0;
+}
 
 void Audio_APU_Register_Write(uint16_t Address, uint8_t Data)
 {

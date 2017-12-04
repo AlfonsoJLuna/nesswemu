@@ -1,6 +1,19 @@
 #include "Controller.h"
 
 
+typedef enum
+{
+    A,
+    B,
+    Select,
+    Start,
+    Up,
+    Down,
+    Left,
+    Right
+} button_t;
+
+
 typedef struct
 {
     bool Buttons[8];
@@ -13,39 +26,30 @@ static controller_t Controller1 = {0};
 static controller_t Controller2 = {0};
 
 
-void Controller_1_Set(button_t Button, bool State)
+void Controller_Set(bool* Buttons)
 {
-    Controller1.Buttons[Button % 8] = State;
-}
-
-
-void Controller_2_Set(button_t Button, bool State)
-{
-    Controller2.Buttons[Button % 8] = State;
-}
-
-
-void Controller_1_Write(uint8_t Data)
-{
-    Controller1.Strobe = Data & 0x01;
-
-    if (Controller1.Strobe)
+    for (int i = 0; i <= 7; i++)
     {
-        Controller1.Index = 0;
+        Controller1.Buttons[i] = Buttons[i];
+        Controller2.Buttons[i] = Buttons[8 + i];
     }
 }
 
-
-void Controller_2_Write(uint8_t Data)
+void Controller_Write(uint8_t Data)
 {
+    Controller1.Strobe = Data & 0x01;
     Controller2.Strobe = Data & 0x01;
 
     if (Controller1.Strobe)
     {
         Controller1.Index = 0;
     }
-}
 
+    if (Controller2.Strobe)
+    {
+        Controller2.Index = 0;
+    }
+}
 
 uint8_t Controller_1_Read()
 {
@@ -70,7 +74,6 @@ uint8_t Controller_1_Read()
 
     return 0x40 | State;
 }
-
 
 uint8_t Controller_2_Read()
 {

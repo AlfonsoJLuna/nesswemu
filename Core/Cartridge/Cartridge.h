@@ -27,5 +27,4 @@ uint8_t Cartridge_CHR_Read(uint16_t Address);
 void Cartridge_CHR_Write(uint16_t Address, uint8_t Data);
 
 
-
 #endif

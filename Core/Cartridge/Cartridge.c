@@ -61,7 +61,6 @@ bool Cartridge_File_Load(uint8_t* File)
     return 0;
 }
 
-
 mirroring_t Cartridge_Get_Mirroring()
 {
     return Header.Mirroring;
@@ -72,18 +71,15 @@ uint8_t Cartridge_PRG_Read(uint16_t Address)
     return PRGROM[Address % 16384];
 }
 
-
 void Cartridge_PRG_Write(uint16_t Address, uint8_t Data)
 {
 
 }
 
-
 uint8_t Cartridge_CHR_Read(uint16_t Address)
 {
     return CHRROM[Address % 8192];
 }
-
 
 void Cartridge_CHR_Write(uint16_t Address, uint8_t Data)
 {
