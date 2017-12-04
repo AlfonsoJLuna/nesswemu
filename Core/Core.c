@@ -7,6 +7,9 @@
 #include "Processor.h"
 
 
+static char Version[] = "nesswemu v1";
+
+
 void Core_Run()
 {
     Processor_CPU_Run();
@@ -44,4 +47,9 @@ int16_t* Core_Get_Audio_Samples()
 uint32_t* Core_Get_Video_Frame()
 {
     return Graphics_Get_Frame();
+}
+
+char* Core_Get_Version();
+{
+    return Version;
 }

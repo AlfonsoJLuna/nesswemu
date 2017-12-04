@@ -20,5 +20,7 @@ int16_t* Core_Get_Audio_Samples();
 
 uint32_t* Core_Get_Video_Frame();
 
+char* Core_Get_Version();
+
 
 #endif
