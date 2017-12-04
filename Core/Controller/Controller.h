@@ -19,6 +19,10 @@ typedef enum
 } button_t;
 
 
+
+void Controller_Set(bool* Buttons);
+
+
 void Controller_1_Set(button_t Button, bool State);
 void Controller_2_Set(button_t Button, bool State);
 

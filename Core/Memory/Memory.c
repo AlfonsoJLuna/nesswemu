@@ -4,14 +4,17 @@
 #include "Cartridge.h"
 #include "Controller.h"
 #include "Graphics.h"
-#include "Processor.h"
+
+
+static uint8_t WRAM[0x800];
+static uint8_t VRAM[0x800];
 
 
 uint8_t Memory_CPU_Read(uint16_t Address)
 {
     if (Address <= 0x1FFF)
     {
-        return Processor_RAM_Read(Address % 0x800);
+        return WRAM[Address % 0x800];
     }
     else if (Address <= 0x3FFF)
     {
@@ -47,12 +50,11 @@ uint8_t Memory_CPU_Read(uint16_t Address)
     }
 }
 
-
 void Memory_CPU_Write(uint16_t Address, uint8_t Data)
 {
     if (Address <= 0x1FFF)
     {
-        Processor_RAM_Write(Address % 0x800, Data);
+        WRAM[Address % 0x800] = Data;
     }
     else if (Address <= 0x3FFF)
     {
@@ -72,8 +74,7 @@ void Memory_CPU_Write(uint16_t Address, uint8_t Data)
     }
     else if (Address == 0x4016)
     {
-        Controller_1_Write(Data);
-        Controller_2_Write(Data);
+        Controller_Write(Data);
     }
     else if (Address == 0x4017)
     {
@@ -84,7 +85,6 @@ void Memory_CPU_Write(uint16_t Address, uint8_t Data)
         Cartridge_PRG_Write(Address, Data);
     }
 }
-
 
 uint8_t Memory_PPU_Read(uint16_t Address)
 {
@@ -103,7 +103,6 @@ uint8_t Memory_PPU_Read(uint16_t Address)
         return Graphics_PPU_Palette_Read(0x3F00 + (Address % 0x20));
     }
 }
-
 
 void Memory_PPU_Write(uint16_t Address, uint8_t Data)
 {

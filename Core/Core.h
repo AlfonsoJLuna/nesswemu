@@ -2,17 +2,23 @@
 #define Core_h
 
 
-#include "Controller.h"
-
 #include <stdbool.h>
 #include <stdint.h>
 
 
-bool Core_Cartridge_File_Load(uint8_t* File);
+void Core_Run();
 
-void Core_Controller_1_Set(button_t Button, bool State);
+void Core_Reset();
 
-void Core_Controller_2_Set(button_t Button, bool State);
+void Core_Power_Cycle();
+
+bool Core_Set_File(uint8_t* File);
+
+void Core_Set_Input(bool* Buttons);
+
+int16_t* Core_Get_Audio_Samples();
+
+uint32_t* Core_Get_Video_Frame();
 
 
 #endif
