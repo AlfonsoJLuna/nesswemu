@@ -10,6 +10,74 @@ static uint8_t WRAM[0x800];
 static uint8_t VRAM[0x800];
 
 
+static inline uint8_t Mirrored_Read(uint16_t Address)
+{
+    if (Cartridge_Get_Mirroring() == Horizontal)
+    {
+        if (Address <= 0x27FF)
+        {
+            return VRAM[Address % 0x400];
+        }
+        else
+        {
+            return VRAM[0x400 + (Address % 0x400)];
+        }
+    }
+    else
+    {
+        if (Address <= 0x23FF)
+        {
+            return VRAM[Address % 0x400];
+        }
+        else if (Address <= 0x27FF)
+        {
+            return VRAM[0x400 + (Address % 0x400)];
+        }
+        else if (Address <= 0x2BFF)
+        {
+            return VRAM[Address % 0x400];
+        }
+        else
+        {
+            return VRAM[0x400 + (Address % 0x400)];
+        }
+    }
+}
+
+static inline void Mirrored_Write(uint16_t Address, uint8_t Data)
+{
+    if (Cartridge_Get_Mirroring() == Horizontal)
+    {
+        if (Address <= 0x27FF)
+        {
+            VRAM[Address % 0x400] = Data;
+        }
+        else
+        {
+            VRAM[0x400 + (Address % 0x400)] = Data;
+        }
+    }
+    else
+    {
+        if (Address <= 0x23FF)
+        {
+            VRAM[Address % 0x400] = Data;
+        }
+        else if (Address <= 0x27FF)
+        {
+            VRAM[0x400 + (Address % 0x400)] = Data;
+        }
+        else if (Address <= 0x2BFF)
+        {
+            VRAM[Address % 0x400] = Data;
+        }
+        else
+        {
+            VRAM[0x400 + (Address % 0x400)] = Data;
+        }
+    }
+}
+
 uint8_t Memory_CPU_Read(uint16_t Address)
 {
     if (Address <= 0x1FFF)
@@ -96,7 +164,7 @@ uint8_t Memory_PPU_Read(uint16_t Address)
     }
     else if (Address <= 0x3EFF)
     {
-        return Cartridge_VRAM_Read(0x2000 + (Address % 0x1000));
+        return Mirrored_Read(0x2000 + (Address % 0x1000));
     }
     else
     {
@@ -114,7 +182,7 @@ void Memory_PPU_Write(uint16_t Address, uint8_t Data)
     }
     else if (Address <= 0x3EFF)
     {
-        Cartridge_VRAM_Write(0x2000 + (Address % 0x1000), Data);
+        Mirrored_Write(0x2000 + (Address % 0x1000), Data);
     }
     else
     {

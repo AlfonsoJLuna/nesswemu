@@ -1,14 +1,6 @@
 #include "Cartridge.h"
 
 
-typedef enum
-{
-    Horizontal,
-    Vertical,
-    FourScreen
-} mirroring_t;
-
-
 typedef struct
 {
     uint32_t MagicNumber;
@@ -21,14 +13,14 @@ typedef struct
 } header_t;
 
 
+static header_t Header;
 static uint8_t PRGROM[16384];
 static uint8_t CHRROM[8192];
-static uint8_t VRAM[2048];
 
 
 bool Cartridge_File_Load(uint8_t* File)
 {
-    header_t Header =
+    Header =
     {
         .MagicNumber = (File[0] << 24) | (File[1] << 16 ) | (File[2] << 8) | File [3];
         .PRGROMSize = File[4];
@@ -70,6 +62,11 @@ bool Cartridge_File_Load(uint8_t* File)
 }
 
 
+mirroring_t Cartridge_Get_Mirroring()
+{
+    return Header.Mirroring;
+}
+
 uint8_t Cartridge_PRG_Read(uint16_t Address)
 {
     return PRGROM[Address % 16384];
@@ -91,16 +88,4 @@ uint8_t Cartridge_CHR_Read(uint16_t Address)
 void Cartridge_CHR_Write(uint16_t Address, uint8_t Data)
 {
 
-}
-
-
-uint8_t Cartridge_VRAM_Read(uint16_t Address)
-{
-    return VRAM[Address % 2048];
-}
-
-
-void Cartridge_VRAM_Write(uint16_t Address, uint8_t Data)
-{
-    VRAM[Address % 2048] = Data;
 }
