@@ -7,6 +7,12 @@
 #include <stdint.h>
 
 
+static inline void checkPageCrossed(uint16_t address_1, uint16_t address_2)
+{
+    cpu.page_crossed = (address_1 & 0xFF00) != (address_2 & 0xFF00);
+}
+
+
 #include "Registers.c"
 #include "Stack.c"
 #include "Addressing.c"
