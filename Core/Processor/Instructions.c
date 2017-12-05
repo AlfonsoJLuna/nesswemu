@@ -391,13 +391,13 @@ static inline void BVS(uint16_t Address)
 }
 
 // Clear Carry Flag
-static inline void CLC(uint16_t Address)
+static inline void CLC()
 {
     CPU.C = 0;
 }
 
 // Clear Decimal Mode
-static inline void CLD(uint16_t Address)
+static inline void CLD()
 {
     CPU.D = 0;
 }
@@ -433,7 +433,7 @@ static inline void SEI()
 }
 
 // Software Interrupt
-static inline void BRK(uint16_t Address)
+static inline void BRK()
 {
     Status_Push_Address(CPU.PC);
     CPU.B = 1;
