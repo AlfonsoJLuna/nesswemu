@@ -49,7 +49,7 @@ uint32_t* Core_Get_Video_Frame()
     return Graphics_Get_Frame();
 }
 
-char* Core_Get_Version();
+char* Core_Get_Version()
 {
     return Version;
 }
