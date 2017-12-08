@@ -5,14 +5,14 @@
 #include <stdio.h>
 
 
-bool Initialize_SDL(SDL_Window* Window, SDL_Renderer* Renderer, SDL_Texture* Texture)
+bool Initialize_SDL(SDL_Window** Window, SDL_Renderer** Renderer, SDL_Texture** Texture)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         return 1;
     }
 
-    Window = SDL_CreateWindow(
+    *Window = SDL_CreateWindow(
         Core_Get_Version(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
@@ -21,13 +21,13 @@ bool Initialize_SDL(SDL_Window* Window, SDL_Renderer* Renderer, SDL_Texture* Tex
         SDL_WINDOW_SHOWN |
         SDL_WINDOW_RESIZABLE);
 
-    Renderer = SDL_CreateRenderer(
-        Window,
+    *Renderer = SDL_CreateRenderer(
+        *Window,
         -1,
         SDL_RENDERER_SOFTWARE);
 
-    Texture = SDL_CreateTexture(
-        Renderer,
+    *Texture = SDL_CreateTexture(
+        *Renderer,
         SDL_PIXELFORMAT_RGB888,
         SDL_TEXTUREACCESS_TARGET,
         256,
@@ -165,11 +165,16 @@ void Finalize_SDL(SDL_Renderer* Renderer)
 
 int main(int argc, char* argv[])
 {
+    if (argc < 2)
+    {
+        return 1;
+    }
+
     SDL_Window* Window = NULL;
     SDL_Renderer* Renderer = NULL;
     SDL_Texture* Texture = NULL;
 
-    if (Initialize_SDL(Window, Renderer, Texture))
+    if (Initialize_SDL(&Window, &Renderer, &Texture))
     {
         return 1;
     }

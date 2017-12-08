@@ -73,28 +73,28 @@ endif
 Build/nesswemu: $(OBJECTS)
 	gcc $^ $(LFLAGS) -o $@
 
-Objects/%.o: Source/Main.c
+Objects/%.o: Source/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Core.c
+Objects/%.o: ../../Core/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Audio/Audio.c
+Objects/%.o: ../../Core/Audio/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Cartridge/Cartridge.c
+Objects/%.o: ../../Core/Cartridge/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Controller/Controller.c
+Objects/%.o: ../../Core/Controller/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Graphics/Graphics.c
+Objects/%.o: ../../Core/Graphics/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Memory/Memory.c
+Objects/%.o: ../../Core/Memory/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
-Objects/%.o: ../../Core/Processor/Processor.c
+Objects/%.o: ../../Core/Processor/%.c
 	gcc $(CFLAGS) $(HEADERS) -c $< -o $@
 
 #-include $(OBJECTS:.o=.d)
