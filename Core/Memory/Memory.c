@@ -92,7 +92,7 @@ uint8_t Memory_CPU_Read(uint16_t Address)
     {
         return Audio_APU_Register_Read(Address);
     }
-    else if (Addess == 0x4014)
+    else if (Address == 0x4014)
     {
         return Graphics_PPU_Register_Read(Address);
     }
@@ -132,7 +132,7 @@ void Memory_CPU_Write(uint16_t Address, uint8_t Data)
     {
         Audio_APU_Register_Write(Address, Data);
     }
-    else if (Addess == 0x4014)
+    else if (Address == 0x4014)
     {
         Graphics_PPU_Register_Write(Address, Data);
     }
