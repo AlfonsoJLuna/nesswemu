@@ -4,7 +4,6 @@
 #include "Memory.h"
 
 #include <stdbool.h>
-#include <stdint.h>
 
 #include "Registers.c"
 #include "Stack.c"

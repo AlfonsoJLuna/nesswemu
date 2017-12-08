@@ -2,6 +2,9 @@
 #define Processor_h
 
 
+#include <stdint.h>
+
+
 uint64_t Processor_CPU_Get_Cycle_Count();
 
 void Processor_CPU_Power_Cycle();

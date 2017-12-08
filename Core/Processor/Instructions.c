@@ -87,7 +87,7 @@ static inline void PHA()
 // Push Processor Status
 static inline void PHP()
 {
-    Stack_Push(statusRead());
+    Stack_Push(Status_Read());
 }
 
 // Pull Accumulator
@@ -309,7 +309,7 @@ static inline void JMP(uint16_t Address)
 // Jump to Subroutine
 static inline void JSR(uint16_t Address)
 {
-    Status_Push_Address(CPU.PC - 1);
+    Stack_Push_Address(CPU.PC - 1);
     CPU.PC = Address;
 }
 
@@ -452,9 +452,9 @@ static inline void SEI()
 // Software Interrupt
 static inline void BRK()
 {
-    Status_Push_Address(CPU.PC);
+    Stack_Push_Address(CPU.PC);
     CPU.B = 1;
-    Stack_Push(statusRead());
+    Stack_Push(Status_Read());
     CPU.B = 0;
     CPU.I = 1;
     CPU.PC = Memory_CPU_Read(0xFFFF) << 8 | Memory_CPU_Read(0xFFFE);

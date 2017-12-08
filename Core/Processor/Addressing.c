@@ -66,20 +66,20 @@ static inline uint16_t Indirect()
 static inline uint16_t Indexed_Indirect()
 {
     uint16_t Address = Zero_Page_X();
-    return (Memory_CPU_Read((Address + 1) & 0xFF) << 8) | Memory_CPU_Read(Address));
+    return (Memory_CPU_Read((Address + 1) & 0xFF) << 8) | Memory_CPU_Read(Address);
 }
 
 static inline uint16_t Indirect_Indexed()
 {
     uint16_t AddressZP = Zero_Page();
-    uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP));
+    uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP);
     return Address + CPU.YI;
 }
 
 static inline uint16_t Indirect_Indexed_Read()
 {
     uint16_t AddressZP = Zero_Page();
-    uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP));
+    uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP);
     Check_Page_Crossed(Address, Address + CPU.YI);
     return Address + CPU.YI;
 }
