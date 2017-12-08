@@ -1,6 +1,9 @@
 #include "Graphics.h"
 
 
+static uint32_t Frame[256 * 240];
+
+
 uint64_t Graphics_PPU_Next_VBlank_Cycle()
 {
     return 0;
@@ -18,7 +21,7 @@ void Graphics_PPU_Power_Cycle()
 
 uint32_t* Graphics_Get_Frame()
 {
-    return NULL;
+    return Frame;
 }
 
 uint8_t Graphics_PPU_Register_Read(uint16_t Address)

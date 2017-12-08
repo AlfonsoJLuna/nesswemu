@@ -21,13 +21,13 @@ HEADERS += -I../../Core/Graphics
 HEADERS += -I../../Core/Memory
 HEADERS += -I../../Core/Processor
 
-CFLAGS += -std=c99 -O2 -Wall -Wextra -MMD
+CFLAGS += -std=c99 -O0 -g -pg -Wall -Wextra -MMD
 
 # Platform-Specific Flags
 
 ifeq ($(OS),Windows_NT)
 
-	LFLAGS += -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2
+	LFLAGS += -g -pg -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2
 
 	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
 

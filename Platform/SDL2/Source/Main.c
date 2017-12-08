@@ -133,10 +133,10 @@ void Render(SDL_Renderer* Renderer, SDL_Texture* Texture)
             Rect.y = Y;
             SDL_RenderDrawRect(Renderer, &Rect);
             SDL_SetRenderDrawColor(Renderer,
-                Frame[256 * Y + X] >> 16,
-                (Frame[256 * Y + X] >> 8) & 0XFF,
-                Frame[256 * Y + X] & 0XFF,
-                0X00);
+                (Frame[256 * Y + X] >> 24) & 0xFF,
+                (Frame[256 * Y + X] >> 16) & 0xFF,
+                (Frame[256 * Y + X] >> 8) & 0xFF,
+                0x00);
             SDL_RenderFillRect(Renderer, &Rect);
         }
     }
@@ -148,10 +148,17 @@ void Render(SDL_Renderer* Renderer, SDL_Texture* Texture)
 
 void Wait(double* LastTime)
 {
+    double FrameRate = 1000.0 / 60.0;
+
     double CurrentTime =
         SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
 
-    SDL_Delay((1000.0 / 60.0) - ((CurrentTime - *LastTime) * 1000.0));
+    double BusyTime = (CurrentTime - *LastTime) * 1000.0;
+
+    if (BusyTime < FrameRate)
+    {
+        SDL_Delay(FrameRate - BusyTime);
+    }
 
     *LastTime =
         SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
@@ -165,11 +172,6 @@ void Finalize_SDL(SDL_Renderer* Renderer)
 
 int main(int argc, char* argv[])
 {
-    if (argc < 2)
-    {
-        return 1;
-    }
-
     SDL_Window* Window = NULL;
     SDL_Renderer* Renderer = NULL;
     SDL_Texture* Texture = NULL;
@@ -179,9 +181,19 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    if (Load_File(argv[1]))
+    if (argc > 1)
     {
-        return 1;
+        if (Load_File(argv[1]))
+        {
+            return 1;
+        }
+    }
+    else
+    {
+        if (Load_File("rom.nes"))
+        {
+            return 1;
+        }
     }
 
     bool Quit = 0;
