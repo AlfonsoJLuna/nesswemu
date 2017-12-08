@@ -40,7 +40,7 @@ bool Cartridge_File_Load(uint8_t* File)
         Header.Mirroring = Horizontal;
     }
 
-    if (Header.MagicNumber != 0x1A53454E)
+    if (Header.MagicNumber != 0x4E45531A)
     {
         return 1;
     }
