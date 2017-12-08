@@ -20,15 +20,12 @@ static uint8_t CHRROM[8192];
 
 bool Cartridge_File_Load(uint8_t* File)
 {
-    Header =
-    {
-        .MagicNumber = (File[0] << 24) | (File[1] << 16 ) | (File[2] << 8) | File [3];
-        .PRGROMSize = File[4];
-        .CHRROMSize = File[5];
-        .HasPRGRAM = File[6] & 0x04;
-        .PRGRAMSIze = File[8];
-        .MapperNumber = (File[7] & 0xF0) | ((File[7] & 0xF0) >> 4);
-    };
+    Header.MagicNumber = (File[0] << 24) | (File[1] << 16 ) | (File[2] << 8) | File [3];
+    Header.PRGROMSize = File[4];
+    Header.CHRROMSize = File[5];
+    Header.HasPRGRAM = File[6] & 0x04;
+    Header.PRGRAMSize = File[8];
+    Header.MapperNumber = (File[7] & 0xF0) | ((File[7] & 0xF0) >> 4);
 
     if (File[6] & 0x08)
     {
