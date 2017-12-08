@@ -5,6 +5,8 @@
 #include <stdint.h>
 
 
+uint64_t Graphics_PPU_Next_VBlank_Cycle();
+
 void Graphics_PPU_Reset();
 
 void Graphics_PPU_Power_Cycle();

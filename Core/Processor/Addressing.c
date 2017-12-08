@@ -1,3 +1,11 @@
+static inline void Check_Page_Crossed(uint16_t Address_1, uint16_t Address_2)
+{
+    if ((Address_1 & 0xFF00) != (Address_2 & 0xFF00))
+    {
+        CPU.CycleCount++;
+    }
+}
+
 static inline uint16_t Immediate()
 {
     return CPU.PC + 1;
@@ -26,14 +34,26 @@ static inline uint16_t Absolute()
 static inline uint16_t Absolute_X()
 {
     uint16_t Address = Absolute();
-    checkPageCrossed(Address, Address + CPU.XI);
+    return Address + CPU.XI;
+}
+
+static inline uint16_t Absolute_X_Read()
+{
+    uint16_t Address = Absolute();
+    Check_Page_Crossed(Address, Address + CPU.XI);
     return Address + CPU.XI;
 }
 
 static inline uint16_t Absolute_Y()
 {
     uint16_t Address = Absolute();
-    checkPageCrossed(Address, Address + CPU.YI);
+    return Address + CPU.YI;
+}
+
+static inline uint16_t Absolute_Y_Read()
+{
+    uint16_t Address = Absolute();
+    Check_Page_Crossed(Address, Address + CPU.YI);
     return Address + CPU.YI;
 }
 
@@ -53,7 +73,14 @@ static inline uint16_t Indirect_Indexed()
 {
     uint16_t AddressZP = Zero_Page();
     uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP));
-    checkPageCrossed(Address, Address + CPU.YI);
+    return Address + CPU.YI;
+}
+
+static inline uint16_t Indirect_Indexed_Read()
+{
+    uint16_t AddressZP = Zero_Page();
+    uint16_t Address = (Memory_CPU_Read((AddressZP + 1) & 0xFF) << 8) | Memory_CPU_Read(AddressZP));
+    Check_Page_Crossed(Address, Address + CPU.YI);
     return Address + CPU.YI;
 }
 
@@ -69,6 +96,5 @@ static inline uint16_t Relative()
     {
         Address = CPU.PC + 2 + Offset - 0x100;
     }
-    checkPageCrossed(CPU.PC, Address);
     return Address;
 }

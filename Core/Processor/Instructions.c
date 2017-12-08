@@ -134,16 +134,25 @@ static inline void BIT(uint16_t Address)
     CPU.N = Value >> 7;
 }
 
+static inline void Binary_Adder(uint8_t Value)
+{
+    uint16_t Result = CPU.AC + Value + CPU.C;
+    CPU.V = (~(CPU.AC ^ Value) & (CPU.AC ^ Result) & 0x80) >> 7;
+    CPU.AC = Result & 0xFF;
+    CPU.C = Result >> 8;
+    Update_Flags_ZN(CPU.AC);
+}
+
 // Add with Carry
 static inline void ADC(uint16_t Address)
 {
-    binaryAdd(Memory_CPU_Read(Address));
+    Binary_Adder(Memory_CPU_Read(Address));
 }
 
 // Subtract with Carry
 static inline void SBC(uint16_t Address)
 {
-    binaryAdd(~Memory_CPU_Read(Address));
+    Binary_Adder(~Memory_CPU_Read(Address));
 }
 
 // Compare Accumulator
@@ -315,7 +324,8 @@ static inline void BCC(uint16_t Address)
 {
     if (!CPU.C)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -325,7 +335,8 @@ static inline void BCS(uint16_t Address)
 {
     if (CPU.C)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -335,7 +346,8 @@ static inline void BEQ(uint16_t Address)
 {
     if (CPU.Z)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -345,7 +357,8 @@ static inline void BMI(uint16_t Address)
 {
     if (CPU.N)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -355,7 +368,8 @@ static inline void BNE(uint16_t Address)
 {
     if (!CPU.Z)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -365,7 +379,8 @@ static inline void BPL(uint16_t Address)
 {
     if (!CPU.N)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -375,7 +390,8 @@ static inline void BVC(uint16_t Address)
 {
     if (!CPU.V)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
@@ -385,7 +401,8 @@ static inline void BVS(uint16_t Address)
 {
     if (CPU.V)
     {
-        CPU.branch_succeed = 1;
+        CPU.CycleCount++;
+		Check_Page_Crossed(CPU.PC, Address);
         CPU.PC = Address;
     }
 }
