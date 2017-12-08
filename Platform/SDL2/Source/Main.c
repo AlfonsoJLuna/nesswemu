@@ -157,7 +157,7 @@ void Wait(double* LastTime)
         SDL_GetPerformanceCounter() / SDL_GetPerformanceFrequency();
 }
 
-void Finalize_SDL()
+void Finalize_SDL(SDL_Renderer* Renderer)
 {
     SDL_DestroyRenderer(Renderer);
     SDL_Quit();
@@ -165,9 +165,9 @@ void Finalize_SDL()
 
 int main(int argc, char* argv[])
 {
-    SDL_Window* Window;
-    SDL_Renderer* Renderer;
-    SDL_Texture* Texture;
+    SDL_Window* Window = NULL;
+    SDL_Renderer* Renderer = NULL;
+    SDL_Texture* Texture = NULL;
 
     if (Initialize_SDL(Window, Renderer, Texture))
     {
@@ -191,7 +191,7 @@ int main(int argc, char* argv[])
         Wait(&LastTime);
     }
 
-    Finalize_SDL();
+    Finalize_SDL(Renderer);
 
     return 0;
 }
