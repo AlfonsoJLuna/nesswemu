@@ -13,10 +13,10 @@ bool Initialize_SDL(SDL_Window** Window, SDL_Renderer** Renderer, SDL_Texture** 
     }
 
     *Window = SDL_CreateWindow(
-        Core_Get_Version(),
+        VERSION,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        256 * 2,
+        ((240 * 4) / 3) * 2,
         240 * 2,
         SDL_WINDOW_SHOWN |
         SDL_WINDOW_RESIZABLE);

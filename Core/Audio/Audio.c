@@ -13,7 +13,7 @@ void Audio_APU_Power_Cycle()
 
 int16_t* Audio_Get_Samples()
 {
-    return NULL;
+    return 0;
 }
 
 uint8_t Audio_APU_Register_Read(uint16_t Address)

@@ -1,3 +1,7 @@
+# Program Version
+
+REVISION = $(shell git rev-list --count master)
+
 # Source Files
 
 SOURCES += Source/Main.c
@@ -21,7 +25,7 @@ HEADERS += -I../../Core/Graphics
 HEADERS += -I../../Core/Memory
 HEADERS += -I../../Core/Processor
 
-CFLAGS += -std=c99 -O0 -g -pg -Wall -Wextra -MMD
+CFLAGS += -std=c99 -O0 -g -pg -Wall -Wextra -MMD -DVERSION='"nesswemu r$(REVISION)"'
 
 # Platform-Specific Flags
 
