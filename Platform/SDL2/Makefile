@@ -1,7 +1,3 @@
-# Program Version
-
-REVISION = $(shell git rev-list --count master)
-
 # Source Files
 
 SOURCES += Source/Main.c
@@ -15,7 +11,7 @@ SOURCES += ../../Core/Processor/Processor.c
 
 OBJECTS += $(addprefix Objects/,$(notdir $(SOURCES:.c=.o)))
 
-# Common Flags
+# Header Directories
 
 HEADERS += -I../../Core
 HEADERS += -I../../Core/Audio
@@ -25,54 +21,38 @@ HEADERS += -I../../Core/Graphics
 HEADERS += -I../../Core/Memory
 HEADERS += -I../../Core/Processor
 
-CFLAGS += -std=c99 -O0 -g -pg -Wall -Wextra -MMD -DVERSION='"nesswemu r$(REVISION)"'
+# Common Flags
+
+CFLAGS += -std=c99 -Wall -Wextra -MMD
+CFLAGS += -DVERSION='"nesswemu r$(shell git rev-list --count master)"'
+
+ifeq ($(BUILD),debug)
+	CFLAGS += -O0 -g -pg
+	LFLAGS += -g -pg
+else
+	CFLAGS += -O2
+endif
 
 # Platform-Specific Flags
 
 ifeq ($(OS),Windows_NT)
-
-	LFLAGS += -g -pg -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2
-
+	LFLAGS += -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2
 	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
-
 		HEADERS += -ILibraries/SDL2-2.0.5/x86_64-w64-mingw32/include/SDL2
-		CFLAGS += -m64
-		LFLAGS += -m64 -LLibraries/SDL2-2.0.5/x86_64-w64-mingw32/lib
-
-	else
-
-		ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
-
-			HEADERS += -ILibraries/SDL2-2.0.5/x86_64-w64-mingw32/include/SDL2
-			CFLAGS += -m64
-			LFLAGS += -m64 -LLibraries/SDL2-2.0.5/x86_64-w64-mingw32/lib
-
-		endif
-
-		ifeq ($(PROCESSOR_ARCHITECTURE),x86)
-
-			HEADERS += -ILibraries/SDL2-2.0.5/i686-w64-mingw32/include/SDL2
-			CFLAGS += -m32
-			LFLAGS += -m32 -LLibraries/SDL2-2.0.5/i686-w64-mingw32/lib
-
-		endif
-
+		LFLAGS += -LLibraries/SDL2-2.0.5/x86_64-w64-mingw32/lib
+	else ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		HEADERS += -ILibraries/SDL2-2.0.5/x86_64-w64-mingw32/include/SDL2
+		LFLAGS += -LLibraries/SDL2-2.0.5/x86_64-w64-mingw32/lib
+	else ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		HEADERS += -ILibraries/SDL2-2.0.5/i686-w64-mingw32/include/SDL2
+		LFLAGS += -LLibraries/SDL2-2.0.5/i686-w64-mingw32/lib
 	endif
-
-else
-
-	UNAME_S += $(shell uname -s)
-
-	ifeq ($(UNAME_S),Linux)
-
-		HEADERS += $(shell sdl2-config --cflags)
-		LFLAGS += $(shell sdl2-config --libs)
-
-	endif
-
+else ifeq ($(shell uname -s),Linux)
+	HEADERS += $(shell sdl2-config --cflags)
+	LFLAGS += $(shell sdl2-config --libs)
 endif
 
-# Rules
+# Building Rules
 
 Build/nesswemu: $(OBJECTS)
 	gcc $^ $(LFLAGS) -o $@
